@@ -149,3 +149,24 @@ def Gale_Shapley(n,m_pr,w_pr):
                 match_w_rank[j] = best_offer_rank
 
     return (match_m,match_w)
+
+def write_instance(table_m,table_w,n):
+    with open('test_instance.txt', 'w') as f:
+        f.write('0\n%d\n%d\n' % (n,n))
+        for table in [table_m, table_w]:
+            for i,row in enumerate(table):
+                f.write('%d ' % (i+1))
+                for el in row:
+                    if type(el) == int:
+                        f.write('(%d) ' % (el+1))
+                    else:
+                        f.write('(')
+                        len_el = len(el)
+                        for j,sub_el in enumerate(el):
+                            if j < len_el - 1:
+                                f.write('%d ' % (sub_el+1))
+                            else:
+                                f.write('%d' % (sub_el+1))
+                        f.write(') ')
+                f.write('\n')
+    f.close()

@@ -1,20 +1,25 @@
 from util import *
+from LTIU import *
 import numpy as np
 import time
 
 # -------------------------------------
 # Simple test case
 # -------------------------------------
-n = 6
-p1 = 0.7
-p2 = 0.5
+n = 300
+p1 = 0.5
+p2 = 1
 m_pr = generate_smti_table(n,p1,p2)
 w_pr = generate_smti_table(n,p1,p2)
 
+'''
 print("The preference table of men:")
 print(m_pr)
 print("The preference table of women:")
 print(w_pr)
+'''
+
+write_instance(m_pr,w_pr,n)
 
 repair = True
 non_repeating = True
@@ -22,7 +27,8 @@ iter = 0
 
 # record unmatched pairs to avoid being trapped in swapping within a subgroup
 match_m_record = []
-while repair and non_repeating and iter < 100:
+time0 = time.perf_counter()
+while repair and non_repeating:
     iter = iter + 1
     match_m, match_w = Gale_Shapley(n,m_pr,w_pr)
     w_pr, repair = swap(m_pr,w_pr,match_m,match_w,n)
@@ -32,8 +38,13 @@ while repair and non_repeating and iter < 100:
                 non_repeating = False
                 break
     match_m_record.append(match_m)
+time1 = time.perf_counter()
+print("Time elapsed: ",time1-time0)
 
 print("Iteration times: ",iter)
+print("===================")
+
+LTIU()
 
 '''
 # -------------------------------------
